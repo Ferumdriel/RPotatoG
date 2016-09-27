@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package db;
+package Prezent.db;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -35,7 +35,7 @@ public abstract class BaseObject  implements Serializable{
     protected String description;
     
     /*
-    *Nazwa tabeli/tabel połączonych joinami
+    *Nazwa tabeli
     */
     public abstract String getTableName();
     /*
