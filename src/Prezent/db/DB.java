@@ -64,10 +64,11 @@ public class DB {
          
          test.deleteData(db);
        
-         
-         
-         
     }
+    public DB(String user, String password) throws Exception{
+        this(DRIVER_CLASS, DBURL, user, password);
+    }
+    
     public DB(String driver, String url, String user, String password) throws Exception{
         if(!prepareDB(driver, url, user, password)){
             throw new Exception("DB connection exception ;(");
