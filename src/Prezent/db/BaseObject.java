@@ -8,6 +8,7 @@ package Prezent.db;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,9 +30,9 @@ public abstract class BaseObject  implements Serializable{
     */
     protected long id;
     protected Timestamp startTime;
-    protected long startUser;
+    protected Long startUser;
     protected Timestamp upTime;
-    protected long upUser;
+    protected Long upUser;
     protected String description;
     
     /*
@@ -125,9 +126,9 @@ public abstract class BaseObject  implements Serializable{
     *Usunięcie obiektu z BD
     */
     
-    public void deleteData(DB db) throws Exception{
+    public void deleteData(DB db) throws SQLException{
         if(getId()<=0){
-            throw new Exception("This object not exists in DB!");
+            throw new SQLException("This object not exists in DB!");
         }
         
         db.query("SELECT "+getDeleteFunctionName()+"("+getDeleteParameters()+")");
@@ -141,9 +142,9 @@ public abstract class BaseObject  implements Serializable{
     *Aktualizacja obiektu BD
     */
     
-    public void updateData(DB db, boolean fillData) throws Exception{
+    public void updateData(DB db, boolean fillData) throws SQLException{
         if(getId() <= 0){
-            throw new Exception("This object not exists in DB!");
+            throw new SQLException("This object not exists in DB!");
         }
         
         db.query("SELECT "+getUpdateFunctionName()+"("+getUpdateParameters()+") as result");
@@ -159,9 +160,9 @@ public abstract class BaseObject  implements Serializable{
     *Zapis obiektu BD
     */
     
-    public void saveData(DB db, boolean fillData) throws Exception{
+    public void saveData(DB db, boolean fillData) throws SQLException{
         if(getId() > 0){
-            throw new Exception("This object exists already in DB!");
+            throw new SQLException("This object exists already in DB!");
         }
         
         db.query("SELECT "+getSaveFunctionName()+"("+getSaveParameters()+") as result");
@@ -179,9 +180,9 @@ public abstract class BaseObject  implements Serializable{
     /*
     *Załadowanie obiektu BD
     */
-    public void loadData(DB db) throws Exception{
+    public void loadData(DB db) throws SQLException{
         if(getId()<=0){
-            throw new Exception("Impossible id for "+getHumanName());
+            throw new SQLException("Impossible id for "+getHumanName());
         }
         
         String query = getSelectStatement() + " "+getWhereStatementForThis();

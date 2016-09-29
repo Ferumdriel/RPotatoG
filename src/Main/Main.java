@@ -3,9 +3,11 @@ package Main;
 import Actions.Event;
 import Prezent.db.DB;
 import Units.Unit;
+import User.User.User;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Properties;
 
 /**
@@ -16,6 +18,7 @@ public class Main {
     public static Main main;
     private final Properties properties = new Properties();
     private DB db;
+    private User loggedUser;
     
     private String login;
     private String password;
@@ -34,6 +37,11 @@ public class Main {
     
     private void loadDB(String user, String password) throws Exception{
         db = new DB(user, password);
+        try{
+            loggedUser = User.getCurrentUser(db);
+        }catch(SQLException e){
+            throw new SQLException("Error while logging to database!!!");
+        }
     }
     
     private void loadProperties(String propertiesFilePath) throws IOException{
@@ -54,11 +62,16 @@ public class Main {
         DB dbCloned = DB.cloneDB(getDb());
         return dbCloned;
     }
+    
+    public User getLoggedUser(){
+        return loggedUser;
+    }
 
     public static void main(String[] args) throws Exception{
         
         main = new Main(args[0]);
         
+        main.getLoggedUser();
         
         Unit ally = new Unit("Andrzej", 170, 15);
         Unit enemy = new Unit("Bombur", 100, 25);
