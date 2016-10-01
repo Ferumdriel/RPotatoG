@@ -5,13 +5,17 @@
  */
 package tools.gui;
 
+import game.Map.Tile;
+import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.JScrollPane;
 
 /**
  *
  * @author BotNaEasyEnv
  */
-public class MapPanel extends javax.swing.JPanel {
+public class MapPanel extends javax.swing.JPanel{
 
     
     private MapDesignPanel designMap = new MapDesignPanel();
@@ -21,10 +25,30 @@ public class MapPanel extends javax.swing.JPanel {
      */
     public MapPanel() {
         initComponents();
-        setVisible(true);
         designMapPanel.add(new JScrollPane(designMap));
         tilesetPanel.add(new JScrollPane(tilePanel));
+        addListeners();
+        setVisible(true);
     }
+    
+    public void addListeners(){
+        tilePanel.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                designMap.setTile((Tile) ae.getSource());
+            }
+        });
+    }
+    
+    public MapDesignPanel getMapDesign(){
+        return designMap;
+    }
+    
+    public TilesetPanel getTilePanel(){
+        return tilePanel;
+    }
+
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -41,7 +65,7 @@ public class MapPanel extends javax.swing.JPanel {
 
         setLayout(new java.awt.BorderLayout());
 
-        jSplitPane1.setDividerLocation(900);
+        jSplitPane1.setDividerLocation(500);
 
         designMapPanel.setLayout(new java.awt.BorderLayout());
         jSplitPane1.setLeftComponent(designMapPanel);
@@ -58,4 +82,5 @@ public class MapPanel extends javax.swing.JPanel {
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JPanel tilesetPanel;
     // End of variables declaration//GEN-END:variables
+
 }

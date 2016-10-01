@@ -11,15 +11,18 @@ import java.io.Serializable;
  *
  * @author BotNaEasyEnv
  */
-public class Map implements Serializable{
+public class GameMap implements Serializable{
     private long id;
     private Tile[][] mapField;
     
-    public static final int MAP_HEIGHT = 10;
-    public static final int MAP_WEIGHT = 10;
+    private int mapHeight;
+    private int mapWeight;
     
-    public Map(){
-        mapField = new Tile[MAP_HEIGHT][MAP_WEIGHT];
+
+    public GameMap(int h, int w){
+        this.mapHeight = h;
+        this.mapWeight = w;
+        mapField = new Tile[mapHeight][mapWeight];
     }
     
     public void doEmptyMap(){
@@ -45,5 +48,15 @@ public class Map implements Serializable{
     public void setMapField(Tile[][] mapField) {
         this.mapField = mapField;
     }
+
+    public int getMapHeight() {
+        return mapHeight;
+    }
+
+    public int getMapWeight() {
+        return mapWeight;
+    }
+    
+    
     
 }

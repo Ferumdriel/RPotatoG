@@ -6,7 +6,11 @@
 package tools.gui;
 
 import game.Prezent.db.DB;
+import java.io.File;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -23,7 +27,7 @@ public class MapCreator extends javax.swing.JFrame {
     public MapCreator() {
         setExtendedState(JFrame.MAXIMIZED_BOTH); 
         //setUndecorated(true);
-        setTitle("Map Creator v.1.0");
+        setTitle("Map Creator v.1.1");
         initComponents();
         loadDB();
         map = new MapPanel();
@@ -54,28 +58,79 @@ public class MapCreator extends javax.swing.JFrame {
         mapPanel = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         saveMenu = new javax.swing.JMenu();
-        loadMenu = new javax.swing.JMenu();
-        newMenu = new javax.swing.JMenu();
+        newMenuItem = new javax.swing.JMenuItem();
+        saveMenuItem = new javax.swing.JMenuItem();
+        loadMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         mapPanel.setLayout(new java.awt.BorderLayout());
         getContentPane().add(mapPanel, java.awt.BorderLayout.CENTER);
 
-        saveMenu.setText("Save");
+        saveMenu.setText("File");
+
+        newMenuItem.setText("New");
+        newMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newMenuItemActionPerformed(evt);
+            }
+        });
+        saveMenu.add(newMenuItem);
+
+        saveMenuItem.setText("Save");
+        saveMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveMenuItemActionPerformed(evt);
+            }
+        });
+        saveMenu.add(saveMenuItem);
+
+        loadMenuItem.setText("Load");
+        loadMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loadMenuItemActionPerformed(evt);
+            }
+        });
+        saveMenu.add(loadMenuItem);
+
         jMenuBar1.add(saveMenu);
-
-        loadMenu.setText("Load");
-        jMenuBar1.add(loadMenu);
-
-        newMenu.setText("New");
-        jMenuBar1.add(newMenu);
 
         setJMenuBar(jMenuBar1);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void newMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newMenuItemActionPerformed
+        int dialogResult = JOptionPane.showConfirmDialog(this, "Are u sure? Non saved project will be deleted!", "Warining!", JOptionPane.YES_NO_OPTION);
+        if(dialogResult == 0){
+            map.getMapDesign().doEmptyMap();
+        }
+    }//GEN-LAST:event_newMenuItemActionPerformed
+
+    private void saveMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveMenuItemActionPerformed
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        int result = fileChooser.showOpenDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+             File selectedFile = fileChooser.getSelectedFile();
+             map.getMapDesign().saveMap(selectedFile);
+        }
+    }//GEN-LAST:event_saveMenuItemActionPerformed
+
+    private void loadMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadMenuItemActionPerformed
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        fileChooser.setFileFilter(new FileNameExtensionFilter("Map files", "map"));
+        int result = fileChooser.showOpenDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+             File selectedFile = fileChooser.getSelectedFile();
+             map.getMapDesign().loadMap(selectedFile);
+        }
+    }//GEN-LAST:event_loadMenuItemActionPerformed
+
+    
     /**
      * @param args the command line arguments
      */
@@ -114,9 +169,10 @@ public class MapCreator extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenu loadMenu;
+    private javax.swing.JMenuItem loadMenuItem;
     private javax.swing.JPanel mapPanel;
-    private javax.swing.JMenu newMenu;
+    private javax.swing.JMenuItem newMenuItem;
     private javax.swing.JMenu saveMenu;
+    private javax.swing.JMenuItem saveMenuItem;
     // End of variables declaration//GEN-END:variables
 }

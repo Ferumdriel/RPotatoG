@@ -5,10 +5,14 @@
  */
 package tools.gui;
 
+import game.Map.Tile;
 import game.Map.Tileset;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
@@ -23,10 +27,13 @@ import javax.imageio.ImageIO;
 public class TilesetPanel extends javax.swing.JPanel implements MouseListener{
 
     
+    private ActionListener listener;
     private BufferedImage image;
     private List<Tileset> tilesets;
     private Tileset currentTileset;
     private Point selected;
+    private Point properPoint;
+    private Tile selectedTile;
     /**
      * Creates new form TilesetPanel
      */
@@ -71,8 +78,7 @@ public class TilesetPanel extends javax.swing.JPanel implements MouseListener{
             if(selected!=null){
                 grphcs.setColor(Color.RED);
                 int a = currentTileset.getSideSize();
-                grphcs.drawRect(getProperX((int)selected.getX()), getProperY((int)selected.getY()), a, a);
-                
+                grphcs.drawRect((int)properPoint.getX(), (int)properPoint.getY(), a, a);
             }
         } 
     }
@@ -105,10 +111,20 @@ public class TilesetPanel extends javax.swing.JPanel implements MouseListener{
         setLayout(new java.awt.BorderLayout());
     }// </editor-fold>//GEN-END:initComponents
 
+    private Image getTileImage(){
+        BufferedImage tile = image.getSubimage((int)properPoint.getX(), (int)properPoint.getY(), currentTileset.getSideSize(), currentTileset.getSideSize());
+        return tile;
+    }
+    
     @Override
     public void mouseClicked(MouseEvent me) {
         selected = new Point(me.getX(), me.getY());
+        properPoint= new Point(getProperX((int)selected.getX()), getProperY((int)selected.getY()));
         repaint();
+        selectedTile = new Tile((int)properPoint.getX(), (int)properPoint.getY(), currentTileset.getSideSize(), currentTileset.getId(), getTileImage());
+        if(listener!=null){
+            listener.actionPerformed(new ActionEvent(selectedTile, 0, "Tile"));
+        }
         //System.out.println("x: "+image.getWidth()+" y: "+image.getHeight());
     }
 
@@ -130,6 +146,9 @@ public class TilesetPanel extends javax.swing.JPanel implements MouseListener{
     public void mouseExited(MouseEvent me) {
     }
 
+    public void addActionListener(ActionListener al){
+        listener = al;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

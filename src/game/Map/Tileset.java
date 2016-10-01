@@ -23,6 +23,10 @@ public class Tileset extends BaseObject{
         return loadAllWithCondition(Tileset.class, "true", db);
     }
     
+    public static List<Tileset> loadAll4ids(DB db, String ids) throws Exception{
+        return loadAllWithCondition(Tileset.class, "id in ("+ids+")", db);
+    }
+    
     @Override
     public String getTableName() {
         return "map_tileset";

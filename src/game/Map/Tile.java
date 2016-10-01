@@ -5,19 +5,34 @@
  */
 package game.Map;
 
+import java.awt.Image;
+import java.io.Serializable;
+
 /**
  *
  * @author BotNaEasyEnv
  */
-public class Tile {
+public class Tile implements Serializable {
     private long id;
     private int xTileset; //wspolrzedna x
     private int yTileset; //wspolrzedna y
     private int a; //dlugosc boku
     private long idTileset;
-    //private int xMap;
-    //private int yMap;
+    private transient Image tile;
     
+    
+    public Tile(){
+        id = 0;
+        idTileset = 0;
+    }
+    
+    public Tile(int xTileset, int yTileset, int a, long idTileset, Image tile){
+        this.xTileset = xTileset;
+        this.yTileset = yTileset;
+        this.a = a;
+        this.idTileset = idTileset;
+        this.tile = tile;
+    }
 
     public long getId() {
         return id;
@@ -43,25 +58,6 @@ public class Tile {
         this.yTileset = yTileset;
     }
 
-    /*
-    public int getxMap() {
-        return xMap;
-    }
-
-    public void setxMap(int xMap) {
-        this.xMap = xMap;
-    }
-
-    public int getyMap() {
-        return yMap;
-    }
-
-    public void setyMap(int yMap) {
-        this.yMap = yMap;
-    }
-*/
-    
-
     public int getA() {
         return a;
     }
@@ -77,7 +73,13 @@ public class Tile {
     public void setIdTileset(long idTileset) {
         this.idTileset = idTileset;
     }
-    
-    
+
+    public Image getTile() {
+        return tile;
+    }
+
+    public void setTile(Image tile) {
+        this.tile = tile;
+    }
     
 }
